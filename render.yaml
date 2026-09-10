@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: 923-files
+    runtime: static
+    staticPublishPath: .
+    buildCommand: ""
+    headers:
+      - path: /files/*
+        name: Access-Control-Allow-Origin
+        value: "*"
+      - path: /files/*
+        name: Timing-Allow-Origin
+        value: "*"
+      - path: /files/*
+        name: Content-Disposition
+        value: attachment
+      - path: /files/*
+        name: Cache-Control
+        value: "public, max-age=31536000, immutable"
