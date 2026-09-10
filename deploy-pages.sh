@@ -48,8 +48,9 @@ git -c user.email="${GITHUB_USER}@users.noreply.github.com" -c user.name="$GITHU
 git branch -M main
 git remote remove origin 2>/dev/null
 git remote add origin "https://github.com/$FULL.git"
-# token 只喺呢一句用，唔會寫入 .git/config
-git -c "http.extraheader=Authorization: Bearer $GITHUB_TOKEN" \
+# git HTTP 要 Basic auth（token 當密碼），唔係 Bearer
+BASIC=$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)
+git -c "http.extraheader=Authorization: Basic $BASIC" \
     -c http.postBuffer=1048576000 -c http.version=HTTP/1.1 -c core.compression=0 \
     push -u origin main 2>&1 | tail -4
 
